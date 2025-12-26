@@ -1,21 +1,20 @@
 name: Daily Steam Check
 
-# Lên lịch: 0h00 UTC-7 → tương đương 07:00 UTC
 on:
   schedule:
     - cron: '0 7 * * *'
-  workflow_dispatch:   # cho phép trigger thủ công
+  workflow_dispatch:
 
 jobs:
   daily-check:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout code
+      # 1️⃣ Checkout code
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 2. Cache Maven dependencies
+      # 2️⃣ Cache Maven dependencies
       - name: Cache Maven packages
         uses: actions/cache@v3
         with:
@@ -24,29 +23,33 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      # 3. Cài Java 17
+      # 3️⃣ Setup Java 17
       - name: Setup Java
         uses: actions/setup-java@v3
         with:
           distribution: temurin
           java-version: '17'
 
-      # 4. Build project
+      # 4️⃣ Build project
       - name: Build project
         run: mvn install -DskipTests
 
-      # 5. Run Discord Notifier
+      # 5️⃣ Run bot
       - name: Run Discord Notifier
         env:
           DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
           CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
-          LOG_PATH: log.csv       # đặt log.csv trực tiếp trong repository runner
+          LOG_PATH: log.csv       # đặt LOG_PATH là log.csv trong repo
           STEAM_URL: ${{ secrets.STEAM_URL }}
         run: java -jar target/SteamFreeGameBot-1.0-SNAPSHOT.jar
 
-      # 6. Upload log file
-      - name: Upload log artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: steam-bot-log
-          path: log.csv
+      # 6️⃣ Commit log CSV
+      - name: Commit log
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add log.csv
+          git commit -m "Update daily Steam free games log" || echo "No changes to commit"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
