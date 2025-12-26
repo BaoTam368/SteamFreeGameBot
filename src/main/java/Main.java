@@ -40,6 +40,9 @@ public class Main {
                     notifier.sendNewGame(g);
                 }
                 control.saveNewGames(newGames);
+                Thread.sleep(5000);
+            } else {
+                System.out.println("Không có game mới hôm nay.");
             }
             String token = Config.getDiscordToken();
             System.out.println("Token ends with: " + token.substring(token.length()-5));
