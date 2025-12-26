@@ -35,11 +35,18 @@ jobs:
       - name: Build project
         run: mvn install -DskipTests
 
-      # 5. Run Notifier
+      # 5. Run Discord Notifier
       - name: Run Discord Notifier
         env:
           DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
           CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
-          LOG_PATH: ${{ secrets.LOG_PATH }}
+          LOG_PATH: log.csv       # đặt log.csv trực tiếp trong repository runner
           STEAM_URL: ${{ secrets.STEAM_URL }}
         run: java -jar target/SteamFreeGameBot-1.0-SNAPSHOT.jar
+
+      # 6. Upload log file
+      - name: Upload log artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: steam-bot-log
+          path: log.csv
