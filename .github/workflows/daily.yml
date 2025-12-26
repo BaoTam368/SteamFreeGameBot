@@ -39,7 +39,7 @@ jobs:
       - name: Run Discord Notifier
         env:
           DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
-          DISCORD_CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
+          CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
           LOG_PATH: ${{ secrets.LOG_PATH }}
           STEAM_URL: ${{ secrets.STEAM_URL }}
         run: java -jar target/SteamFreeGameBot-1.0-SNAPSHOT.jar
