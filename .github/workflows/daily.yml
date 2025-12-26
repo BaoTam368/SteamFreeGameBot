@@ -32,18 +32,22 @@ jobs:
 
       # 4️⃣ Build project
       - name: Build project
-        run: mvn install -DskipTests
+        run: mvn package -DskipTests
 
       # 5️⃣ Run bot
       - name: Run Discord Notifier
         env:
           DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
           CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
-          LOG_PATH: log.csv       # đặt LOG_PATH là log.csv trong repo
+          LOG_PATH: log.csv
           STEAM_URL: ${{ secrets.STEAM_URL }}
         run: java -jar target/SteamFreeGameBot-1.0-SNAPSHOT.jar
 
-      # 6️⃣ Commit log CSV
+      # 6️⃣ Optional: Show log content
+      - name: Show log file
+        run: cat log.csv || echo "log.csv not created"
+
+      # 7️⃣ Commit log CSV
       - name: Commit log
         run: |
           git config --global user.name "GitHub Actions"
