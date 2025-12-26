@@ -41,7 +41,8 @@ public class Main {
                 }
                 control.saveNewGames(newGames);
             }
-            System.out.println("Token: " + Config.getDiscordToken());
+            String token = Config.getDiscordToken();
+            System.out.println("Token ends with: " + token.substring(token.length()-5));
             System.out.println("Channel: " + Config.getChannelId());
             System.out.println("Log path: " + Config.getLogPath());
             
