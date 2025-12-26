@@ -41,7 +41,8 @@ public class Main {
                 }
                 control.saveNewGames(newGames);
             }
-            System.out.println("=== APPLICATION RUNNING ===");
+            jda.shutdown();
+            System.out.println("=== Done ===");
 
         } catch (Exception e) {
             e.printStackTrace();
