@@ -33,5 +33,4 @@ jobs:
           DISCORD_CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
           LOG_PATH: ${{ secrets.LOG_PATH }}
           STEAM_URL: ${{ secrets.STEAM_URL }}
-        run: |
-          java -cp target/DiscordBot.jar Main
+        run: java -jar target/SteamFreeGameBot-1.0-SNAPSHOT.jar
