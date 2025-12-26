@@ -41,6 +41,10 @@ public class Main {
                 }
                 control.saveNewGames(newGames);
             }
+            System.out.println("Token: " + Config.getDiscordToken());
+            System.out.println("Channel: " + Config.getChannelId());
+            System.out.println("Log path: " + Config.getLogPath());
+            
             jda.shutdown();
             System.out.println("=== Done ===");
 
