@@ -41,9 +41,10 @@ public class Main {
                     notifier.sendNewGame(g);
                 }
                 control.saveNewGames(newGames);
+                jda.shutdown();
             }
 
-            System.out.println("=== APPLICATION RUNNING ===");
+            System.out.println("=== DONE ===");
 
         } catch (Exception e) {
             e.printStackTrace();
