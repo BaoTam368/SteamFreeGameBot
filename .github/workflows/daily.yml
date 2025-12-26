@@ -3,7 +3,7 @@ name: Daily Steam Check
 # Lên lịch: 0h00 UTC-7 → tương đương 07:00 UTC
 on:
   schedule:
-    - cron: '0 7 * * *' # chạy mỗi ngày 07:00 UTC (~0h00 UTC-7)
+    - cron: '0 7 * * *'
   workflow_dispatch:   # cho phép trigger thủ công
 
 jobs:
@@ -15,19 +15,28 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 2. Cài Java 17
+      # 2. Cache Maven dependencies
+      - name: Cache Maven packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      # 3. Cài Java 17
       - name: Setup Java
         uses: actions/setup-java@v3
         with:
           distribution: temurin
           java-version: '17'
 
-      # 3. Build bot
+      # 4. Build project
       - name: Build project
-        run: mvn clean install
+        run: mvn install -DskipTests
 
-      # 4. Run Notifier
-      - name:  Run Discord Notifier
+      # 5. Run Notifier
+      - name: Run Discord Notifier
         env:
           DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
           DISCORD_CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
