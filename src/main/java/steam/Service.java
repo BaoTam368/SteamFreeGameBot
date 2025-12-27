@@ -28,7 +28,11 @@ public class Service {
             .header("Accept", "text/html")
             .timeout(15000)
             .get();
-
+        
+        // DEBUG: kiểm tra HTML trả về
+        System.out.println("HTML length: " + doc.html().length());
+        System.out.println(doc.html().substring(0, Math.min(500, doc.html().length())));
+        
         Elements games = doc.select("a.search_result_row");
 
         for (Element e : games) {
@@ -69,6 +73,10 @@ public class Service {
                 .timeout(15000)
                 .get();
 
+            // DEBUG: kiểm tra HTML trả về
+            System.out.println("HTML length (app " + appId + "): " + doc.html().length());
+            System.out.println(doc.html().substring(0, Math.min(500, doc.html().length())));
+            
             Element p = doc.selectFirst(".game_purchase_discount_quantity");
             if (p == null) return null;
 
