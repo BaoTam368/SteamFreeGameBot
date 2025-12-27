@@ -67,9 +67,9 @@ public class Service {
                 .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) " +
                    "AppleWebKit/537.36 (KHTML, like Gecko) " +
                    "Chrome/122.0.0.0 Safari/537.36")
-                .header("Accept-Language", "en-US,en;q=0.9")
+                .header("Accept-Language", "vi-VN,vi;q=0.9,en;q=0.8") // ép tiếng Việt
                 .header("Accept", "text/html")
-                .cookie("Steam_Language", "english") // ép EN cho ổn định
+                .cookie("Steam_Language", "vietnamese")               // cookie ép VN
                 .timeout(15000)
                 .get();
 
