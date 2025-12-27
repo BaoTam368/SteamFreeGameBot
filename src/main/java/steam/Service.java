@@ -21,10 +21,18 @@ public class Service {
         List<Game> result = new ArrayList<>();
 
         Document doc = Jsoup.connect(Config.getSteamUrl())
-                .userAgent("Mozilla/5.0")
-                .timeout(10000)
-                .get();
-
+            .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) " +
+                   "AppleWebKit/537.36 (KHTML, like Gecko) " +
+                   "Chrome/122.0.0.0 Safari/537.36")
+            .header("Accept-Language", "en-US,en;q=0.9")
+            .header("Accept", "text/html")
+            .timeout(15000)
+            .get();
+        
+        // DEBUG: kiểm tra HTML trả về
+        System.out.println("HTML length: " + doc.html().length());
+        System.out.println(doc.html().substring(0, Math.min(500, doc.html().length())));
+        
         Elements games = doc.select("a.search_result_row");
 
         for (Element e : games) {
@@ -56,11 +64,19 @@ public class Service {
         try {
             String url = "https://store.steampowered.com/app/" + appId;
             Document doc = Jsoup.connect(url)
-                    .userAgent("Mozilla/5.0")
-                    .cookie("Steam_Language", "english") // ép EN cho ổn định
-                    .timeout(10_000)
-                    .get();
+                .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) " +
+                   "AppleWebKit/537.36 (KHTML, like Gecko) " +
+                   "Chrome/122.0.0.0 Safari/537.36")
+                .header("Accept-Language", "vi-VN,vi;q=0.9,en;q=0.8") // ép tiếng Việt
+                .header("Accept", "text/html")
+                .cookie("Steam_Language", "vietnamese")               // cookie ép VN
+                .timeout(15000)
+                .get();
 
+            // DEBUG: kiểm tra HTML trả về
+            System.out.println("HTML length (app " + appId + "): " + doc.html().length());
+            System.out.println(doc.html().substring(0, Math.min(500, doc.html().length())));
+            
             Element p = doc.selectFirst(".game_purchase_discount_quantity");
             if (p == null) return null;
 
